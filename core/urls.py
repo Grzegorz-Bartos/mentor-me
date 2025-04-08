@@ -2,16 +2,15 @@ from debug_toolbar.toolbar import debug_toolbar_urls
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 
 from home import views as home_views
-from users import views as users_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", home_views.HomeView.as_view(), name="home"),
-    path("signup/", users_views.SignupView.as_view(), name="signup"),
-    path("login/", users_views.LoginView.as_view(), name="login"),
+    path("accounts/", include("users.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
 ]
 
 

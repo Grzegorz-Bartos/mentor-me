@@ -8,7 +8,7 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="form-container" data-aos="fade-up">
                             <h2 class="text-center mb-4">Register</h2>
-                            <form action="/register/" method="post" class="php-email-form">
+                            <form action="/accounts/signup/" method="post">
                                 {% csrf_token %}
                                 {{ form }}
                                 <button type="submit" class="btn btn-primary">Register</button>
