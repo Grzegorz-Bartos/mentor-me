@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <main class="main">
+        <section id="register" class="register section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <h2 class="text-center">Register</h2>
+                        <form method="post" action="{% url 'register' %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text"
+                                       id="username"
+                                       name="username"
+                                       class="newsletter-input"
+                                       placeholder="Choose a username">
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email"
+                                       id="email"
+                                       name="email"
+                                       class="newsletter-input"
+                                       placeholder="Enter your email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password1" class="form-label">Password</label>
+                                <input type="password"
+                                       id="password1"
+                                       name="password1"
+                                       class="newsletter-input"
+                                       placeholder="Enter a password">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password2" class="form-label">Confirm Password</label>
+                                <input type="password"
+                                       id="password2"
+                                       name="password2"
+                                       class="newsletter-input"
+                                       placeholder="Confirm your password">
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Register</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
