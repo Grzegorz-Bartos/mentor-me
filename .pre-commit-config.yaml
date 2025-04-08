@@ -22,6 +22,8 @@ repos:
     rev: v0.9.6
     hooks:
       - id: ruff
+        args:
+          ["--fix"]
 -   repo: https://github.com/djlint/djLint
     rev: v1.36.4
     hooks:

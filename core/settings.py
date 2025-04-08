@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "debug_toolbar",
     "home",
+    "users",
 ]
 
 MIDDLEWARE = [
