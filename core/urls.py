@@ -10,7 +10,8 @@ from users import views as users_views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", home_views.HomeView.as_view(), name="home"),
-    path("signup", users_views.SignupView.as_view(), name="signup"),
+    path("signup/", users_views.SignupView.as_view(), name="signup"),
+    path("login/", users_views.LoginView.as_view(), name="login"),
 ]
 
 

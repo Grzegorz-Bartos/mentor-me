@@ -2,49 +2,47 @@
 {% load static %}
 {% block content %}
     <main class="main">
-        <section id="register" class="register section">
+        <section id="register" class="section register-page">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <h2 class="text-center">Register</h2>
-                        <form method="post" action="{% url 'signup' %}">
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text"
-                                       id="username"
-                                       name="username"
-                                       class="newsletter-input"
-                                       placeholder="Choose a username">
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email"
-                                       id="email"
-                                       name="email"
-                                       class="newsletter-input"
-                                       placeholder="Enter your email">
-                            </div>
-                            <div class="mb-3">
-                                <label for="password1" class="form-label">Password</label>
-                                <input type="password"
-                                       id="password1"
-                                       name="password1"
-                                       class="newsletter-input"
-                                       placeholder="Enter a password">
-                            </div>
-                            <div class="mb-3">
-                                <label for="password2" class="form-label">Confirm Password</label>
-                                <input type="password"
-                                       id="password2"
-                                       name="password2"
-                                       class="newsletter-input"
-                                       placeholder="Confirm your password">
-                            </div>
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">Register</button>
-                            </div>
-                        </form>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="form-container" data-aos="fade-up">
+                            <h2 class="text-center mb-4">Register</h2>
+                            <form action="/register/" method="post" class="php-email-form">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <input type="text"
+                                           name="username"
+                                           class="form-control"
+                                           placeholder="Username"
+                                           required>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="email"
+                                           name="email"
+                                           class="form-control"
+                                           placeholder="Email"
+                                           required>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="password"
+                                           name="password"
+                                           class="form-control"
+                                           placeholder="Password"
+                                           required>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="password"
+                                           name="confirm_password"
+                                           class="form-control"
+                                           placeholder="Confirm Password"
+                                           required>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Register</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
