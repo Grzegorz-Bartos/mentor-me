@@ -243,7 +243,6 @@ h6 {
   font-size: 30px;
   margin: 0;
   letter-spacing: 1px;
-  text-transform: uppercase;
   color: var(--accent-color);
 }
 
