@@ -5,12 +5,14 @@ from django.contrib import admin
 from django.urls import include, path
 
 from home import views as home_views
+from listings import views as listings_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", home_views.HomeView.as_view(), name="home"),
     path("accounts/", include("users.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
+    path("listings/", listings_views.ListingListView.as_view(), name="listings"),
 ]
 
 
