@@ -6,6 +6,7 @@ from django.urls import include, path
 
 from home import views as home_views
 from listings import views as listings_views
+from mentors import views as mentors_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -13,6 +14,7 @@ urlpatterns = [
     path("accounts/", include("users.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
     path("listings/", listings_views.ListingListView.as_view(), name="listings"),
+    path("mentoring/", mentors_views.MentorsListView.as_view(), name="mentors"),
 ]
 
 
