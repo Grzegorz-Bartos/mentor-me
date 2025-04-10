@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "home",
     "users",
+    "listings",
+    "mentors",
 ]
 
 MIDDLEWARE = [
