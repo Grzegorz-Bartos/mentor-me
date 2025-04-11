@@ -17,6 +17,7 @@ urlpatterns = [
     path("listings/", listings_views.ListingListView.as_view(), name="listings"),
     path("mentoring/", mentors_views.MentorsListView.as_view(), name="mentors"),
     path("about/", dashboard_views.AboutView.as_view(), name="about"),
+    path("contact/", dashboard_views.ContactView.as_view(), name="contact"),
 ]
 
 
