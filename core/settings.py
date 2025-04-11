@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "users",
     "listings",
     "mentors",
+    "dashboard",
 ]
 
 MIDDLEWARE = [
