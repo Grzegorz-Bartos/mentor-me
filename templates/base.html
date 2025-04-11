@@ -46,24 +46,29 @@
                 <nav id="navmenu" class="navmenu">
                     <ul>
                         <li>
-                            <a href="/" class="active">Home
+                            <a href="/" {% if request.path == '/' %}class="active"{% endif %}>Home
                                 <br>
                             </a>
                         </li>
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/about/"
+                               {% if request.path == '/about/' %}class="active"{% endif %}>About</a>
                         </li>
                         <li>
-                            <a href="/listings/">Listings</a>
+                            <a href="/listings/"
+                               {% if request.path == '/listings/' %}class="active"{% endif %}>Listings</a>
                         </li>
                         <li>
-                            <a href="/mentoring/">Mentoring</a>
+                            <a href="/mentoring/"
+                               {% if request.path == '/mentoring/' %}class="active"{% endif %}>Mentoring</a>
                         </li>
                         <li>
-                            <a href="/jobs/">Jobs</a>
+                            <a href="/jobs/"
+                               {% if request.path == '/jobs/' %}class="active"{% endif %}>Jobs</a>
                         </li>
                         <li>
-                            <a href="/pricing/">Pricing</a>
+                            <a href="/pricing/"
+                               {% if request.path == '/pricing/' %}class="active"{% endif %}>Pricing</a>
                         </li>
                         <!--                        <li class="dropdown">-->
                         <!--                            <a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>-->
@@ -103,7 +108,8 @@
                         <!--                            </ul>-->
                         <!--                        </li>-->
                         <li>
-                            <a href="/contact/">Contact</a>
+                            <a href="/contact/"
+                               {% if request.path == '/contact/' %}class="active"{% endif %}>Contact</a>
                         </li>
                     </ul>
                     <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
