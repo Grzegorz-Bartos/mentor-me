@@ -8,6 +8,7 @@ from dashboard import views as dashboard_views
 from home import views as home_views
 from listings import views as listings_views
 from mentors import views as mentors_views
+from subscriptions import views as subscriptions_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -18,6 +19,7 @@ urlpatterns = [
     path("mentoring/", mentors_views.MentorsListView.as_view(), name="mentors"),
     path("about/", dashboard_views.AboutView.as_view(), name="about"),
     path("contact/", dashboard_views.ContactView.as_view(), name="contact"),
+    path("pricing/", subscriptions_views.PricingView.as_view(), name="pricing"),
 ]
 
 
