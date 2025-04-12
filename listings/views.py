@@ -13,3 +13,8 @@ class JobsListView(ListView):
     template_name = "jobs_list.html"
     model = Listing
     context_object_name = "jobs"
+
+
+class MentorListView(ListView):
+    template_name = "mentor_list.html"
+    model = Listing
