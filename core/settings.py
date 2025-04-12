@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     "listings",
     "mentors",
     "dashboard",
+    "payments",
+    "subscriptions",
 ]
 
 MIDDLEWARE = [
