@@ -4,7 +4,7 @@ from listings.models import Listing
 
 
 class ListingListView(ListView):
-    template_name = "listing_list.html"
+    template_name = "listings.html"
     model = Listing
     context_object_name = "listings"
 
