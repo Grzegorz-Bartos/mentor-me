@@ -1,10 +1,10 @@
 from django.db import models
 
-from users.models import User
+from users.models import Account
 
 
 class Listing(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listings")
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="listings")
     title = models.CharField(max_length=255)
     description = models.TextField()
     price = models.FloatField()
