@@ -27,3 +27,14 @@ jobs:
     - name: Run Tests
       run: |
         python manage.py test
+    - name: Run Bandit
+      run: |
+        bandit -r .
+    - name: Run Ruff
+      run: |
+        ruff check
+    - name: Run Safety
+      run: |
+        safety check
+      continue-on-error: true
+
