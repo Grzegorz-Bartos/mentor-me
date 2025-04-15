@@ -9,12 +9,12 @@ class ListingListView(ListView):
     context_object_name = "listings"
 
 
-class JobsListView(ListView):
+class JobListView(ListView):  # Job
     template_name = "job-list.html"
-    model = Listing
+    model = Listing  # add separate model
     context_object_name = "jobs"
 
 
 class MentorListView(ListView):
     template_name = "mentor-list.html"
-    model = Listing
+    model = Listing  # add separate model
