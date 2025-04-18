@@ -9,6 +9,7 @@ from dashboard.views import (  # zmiana na poniżej na takie jak w tej linii.
     ContactView,
 )
 from home import views as home_views
+from jobs.views import JobListView
 from listings import views as listings_views
 from subscriptions import views as subscriptions_views
 
@@ -18,7 +19,7 @@ urlpatterns = [
     path("accounts/", include("users.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
     path("listings/", listings_views.ListingListView.as_view(), name="listings"),
-    path("jobs/", listings_views.JobListView.as_view(), name="jobs"),
+    path("jobs/", JobListView.as_view(), name="jobs"),
     path("mentoring/", listings_views.MentorListView.as_view(), name="mentors"),
     path("about/", AboutView.as_view(), name="about"),
     path("contact/", ContactView.as_view(), name="contact"),
