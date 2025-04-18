@@ -24,6 +24,8 @@ INSTALLED_APPS = [
     "home",
     "users",
     "listings",
+    "jobs",
+    "mentors",
     "dashboard",
     "payments",
     "subscriptions",
