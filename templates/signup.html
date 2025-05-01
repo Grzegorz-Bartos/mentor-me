@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block content %}
     <main class="main">
         <section id="register" class="section register-page">
@@ -10,10 +11,10 @@
                             <h2 class="text-center mb-4">Register</h2>
                             <form action="/accounts/signup/" method="post">
                                 {% csrf_token %}
-                                {{ form }}
-                                <button type="submit" class="btn btn-primary">Register</button>
-                            </div>
-                        </form>
+                                {{ form | crispy }}
+                                <button type="submit" class="btn btn-primary w-100">Register</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -21,6 +21,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "debug_toolbar",
+    "crispy_forms",
+    "crispy_bootstrap4",
+]
+
+INSTALLED_EXTENSIONS = [
     "home",
     "users",
     "listings",
@@ -30,6 +35,8 @@ INSTALLED_APPS = [
     "payments",
     "subscriptions",
 ]
+
+INSTALLED_APPS += INSTALLED_EXTENSIONS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -121,3 +128,7 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = "/"
 AUTH_USER_MODEL = "users.Account"
+
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "boostrap4"
+CRISPY_TEMPLATE_PACK = "bootstrap4"
