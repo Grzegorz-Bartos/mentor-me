@@ -1,22 +1,36 @@
+from django.conf import settings
 from django.db import models
-
-from users.models import Account
+from django.utils import timezone
 
 
 class Listing(models.Model):
+    class ListingType(models.TextChoices):
+        TUTOR = "tutor", "Tutor"
+        MENTOR = "mentor", "Mentor"
+
+    class RateUnit(models.TextChoices):
+        HOURLY = "hourly", "per hour"
+        FIXED = "fixed", "fixed"
+
     user = models.ForeignKey(
-        Account,
-        on_delete=models.CASCADE,
-        related_name="listings",
-        help_text="User's account",
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="listings"
+    )
+    type = models.CharField(
+        max_length=10, choices=ListingType.choices, default=ListingType.TUTOR
     )
     title = models.CharField(max_length=255)
     description = models.TextField()
-    price = models.FloatField()  # -> DecimalField (max_digtis, decimal_places)
-    category = models.CharField(max_length=100)  # choice field
-    status = models.CharField(max_length=50)  # ex. 'active', 'inactive' -> choicefield
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    rate_unit = models.CharField(
+        max_length=10, choices=RateUnit.choices, default=RateUnit.HOURLY
+    )
+    subject = models.CharField(max_length=120, blank=True)
+    category = models.CharField(max_length=100, blank=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
-    def __str__(self) -> str:
-        return self.title
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.get_type_display()}: {self.title}"

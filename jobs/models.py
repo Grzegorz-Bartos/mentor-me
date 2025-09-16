@@ -1,22 +1,52 @@
+from django.conf import settings
 from django.db import models
-
-from users.models import Account
+from django.utils import timezone
 
 
 class Job(models.Model):
+    class Mode(models.TextChoices):
+        OFFERS = "offers", "Offers (client picks)"
+        FIRST_COME = "first", "First-come"
+
+    class Status(models.TextChoices):
+        OPEN = "open", "Open"
+        IN_PROGRESS = "in_progress", "In Progress"
+        CLOSED = "closed", "Closed"
+        CANCELLED = "cancelled", "Cancelled"
+
     user = models.ForeignKey(
-        Account,
-        on_delete=models.CASCADE,
-        related_name="jobs",
-        help_text="User's account",
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="jobs"
     )
     title = models.CharField(max_length=255)
     description = models.TextField()
-    price = models.FloatField()  # -> DecimalField (max_digtis, decimal_places)
-    category = models.CharField(max_length=100)  # choice field
-    status = models.CharField(max_length=50)  # ex. 'active', 'inactive' -> choicefield
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    budget = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    subject = models.CharField(max_length=120, blank=True)
+    mode = models.CharField(max_length=10, choices=Mode.choices, default=Mode.OFFERS)
+    status = models.CharField(
+        max_length=20, choices=Status.choices, default=Status.OPEN
+    )
+    created_at = models.DateTimeField(default=timezone.now)
 
-    def __str__(self) -> str:
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
         return self.title
+
+
+class Proposal(models.Model):
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name="proposals")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="proposals"
+    )
+    message = models.TextField(blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    is_accepted = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ("job", "user")
+        ordering = ["created_at"]
+
+    def __str__(self):
+        return f"{self.user} -> {self.job}"

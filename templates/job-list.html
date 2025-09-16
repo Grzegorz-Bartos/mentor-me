@@ -31,30 +31,80 @@
         <!-- Courses Section -->
         <section id="courses" class="courses section">
             <div class="container">
+                <div class="container mb-3">
+                    {% if user.is_authenticated %}
+                        <a class="btn btn-primary" href="{% url 'job-create' %}">Post a Job</a>
+                    {% else %}
+                        <a class="btn btn-primary"
+                           href="{% url 'login' %}?next={% url 'job-create' %}">Post a Job</a>
+                    {% endif %}
+                </div>
                 <div class="row">
-                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch"
-                         data-aos="zoom-in"
-                         data-aos-delay="100">
-                        {% for job in jobs %}
+                    {% for job in jobs %}
+                        <div class="col-lg-4 col-md-6 d-flex align-items-stretch"
+                             data-aos="zoom-in"
+                             data-aos-delay="100">
                             <div class="course-item">
                                 <img src="{% static 'img/course-1.jpg' %}" class="img-fluid" alt="...">
                                 <div class="course-content">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <p class="category">{{ job.category }}</p>
-                                        <p class="price">${{ job.price }}/hour</p>
+                                        <p class="category">{{ job.subject|default:"General" }}</p>
+                                        <p class="price">
+                                            {% if job.budget %}
+                                                ${{ job.budget }}
+                                            {% else %}
+                                                —
+                                            {% endif %}
+                                        </p>
                                     </div>
                                     <h3>
-                                        <a href="course-details.html">{{ job.title }}</a>
+                                        <a href="{% url 'job-detail' job.id %}">{{ job.title }}</a>
                                     </h3>
-                                    <p class="description">{{ job.description }}</p>
+                                    <p class="description">{{ job.description|truncatechars:140 }}</p>
+                                    {# Action buttons #}
+                                    <div class="mt-2 d-flex gap-2 flex-wrap">
+                                        {% if job.mode == "first" %}
+                                            {% if user.is_authenticated and user.can_take_jobs %}
+                                                <a class="btn btn-success btn-sm" href="{% url 'job-take' job.id %}">Take Job</a>
+                                            {% elif user.is_authenticated %}
+                                                <a class="btn btn-outline-secondary btn-sm disabled">Upgrade to Freelancer to take jobs</a>
+                                            {% else %}
+                                                <a class="btn btn-success btn-sm"
+                                                   href="{% url 'login' %}?next={% url 'job-take' job.id %}">Login to take</a>
+                                            {% endif %}
+                                        {% elif job.mode == "offers" %}
+                                            {% if user.is_authenticated and user.can_take_jobs %}
+                                                <a class="btn btn-primary btn-sm" href="{% url 'job-offer' job.id %}">Submit Offer</a>
+                                            {% elif user.is_authenticated %}
+                                                <a class="btn btn-outline-secondary btn-sm disabled">Upgrade to Freelancer to offer</a>
+                                            {% else %}
+                                                <a class="btn btn-primary btn-sm"
+                                                   href="{% url 'login' %}?next={% url 'job-offer' job.id %}">Login to offer</a>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                    {# Owner can accept offers #}
+                                    {% if user.is_authenticated and user.id == job.user_id and job.mode == "offers" %}
+                                        <div class="mt-2">
+                                            <small class="text-muted d-block mb-1">Offers:</small>
+                                            {% for p in job.proposals.all %}
+                                                <a class="btn btn-outline-success btn-sm mb-1"
+                                                   href="{% url 'job-accept-offer' job.id p.id %}">
+                                                    Accept {{ p.user.username }}
+                                                    {% if p.price %}(${{ p.price }}){% endif %}
+                                                </a>
+                                            {% empty %}
+                                                <span class="text-muted">No offers yet.</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
                                     {% if user.is_authenticated %}
-                                        <!-- User -->
-                                        <div class="trainer d-flex justify-content-between align-items-center">
+                                        <div class="trainer d-flex justify-content-between align-items-center mt-3">
                                             <div class="trainer-profile d-flex align-items-center">
                                                 <img src="{% static 'img/trainers/trainer-1-2.jpg' %}"
                                                      class="img-fluid"
                                                      alt="">
-                                                <a href="/" class="trainer-link">Antonio</a>
+                                                <a href="/" class="trainer-link">{{ job.user.username }}</a>
                                             </div>
                                             <div class="trainer-rank d-flex align-items-center">
                                                 <i class="bi bi-person user-icon"></i>&nbsp;50
@@ -66,7 +116,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- End Course Item-->
                     {% endfor %}
                 </div>
             </div>

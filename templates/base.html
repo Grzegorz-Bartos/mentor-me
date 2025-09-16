@@ -114,9 +114,28 @@
                     </ul>
                     <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
                 </nav>
-                <a class="btn-getstarted" href="/accounts/login">Log In</a>
+                {# Auth actions in navbar #}
+                {% if user.is_authenticated %}
+                    <span class="btn btn-outline-primary ms-2 disabled">Hi, {{ user.username }}</span>
+                    <form class="d-inline" method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button class="btn btn-primary ms-2" type="submit">Logout</button>
+                    </form>
+                {% else %}
+                    <a class="btn btn-primary ms-2" href="{% url 'login' %}">Login</a>
+                    <a class="btn btn-outline-primary ms-2" href="{% url 'signup' %}">Sign up</a>
+                {% endif %}
             </div>
         </header>
+        {# Flash messages #}
+        {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags|default:'info' }} mb-2"
+                         role="alert">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
         {% block content %}{% endblock %}
         <footer id="footer" class="footer position-relative light-background">
             <div class="container footer-top">

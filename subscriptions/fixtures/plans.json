@@ -1,0 +1,46 @@
+[
+  {
+    "model": "subscriptions.plan",
+    "pk": 1,
+    "fields": {
+      "name": "Student",
+      "level": 1,
+      "price_month": "0.00",
+      "is_free": true,
+      "max_listings": 10
+    }
+  },
+  {
+    "model": "subscriptions.plan",
+    "pk": 2,
+    "fields": {
+      "name": "Tutor",
+      "level": 2,
+      "price_month": "19.00",
+      "is_free": false,
+      "max_listings": 50
+    }
+  },
+  {
+    "model": "subscriptions.plan",
+    "pk": 3,
+    "fields": {
+      "name": "Freelancer",
+      "level": 3,
+      "price_month": "29.00",
+      "is_free": false,
+      "max_listings": 50
+    }
+  },
+  {
+    "model": "subscriptions.plan",
+    "pk": 4,
+    "fields": {
+      "name": "Mentor",
+      "level": 4,
+      "price_month": "49.00",
+      "is_free": false,
+      "max_listings": 100
+    }
+  }
+]

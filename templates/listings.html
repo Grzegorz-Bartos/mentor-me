@@ -27,6 +27,14 @@
                 </div>
             </nav>
         </div>
+        <div class="container mb-3">
+            {% if user.is_authenticated %}
+                <a class="btn btn-primary" href="{% url 'create-listing' %}">Create Listing</a>
+            {% else %}
+                <a class="btn btn-primary"
+                   href="{% url 'login' %}?next={% url 'create-listing' %}">Create Listing</a>
+            {% endif %}
+        </div>
         <!-- End Page Title -->
         {% include 'listing-tiles.html' %}
     </main>
