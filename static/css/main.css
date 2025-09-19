@@ -22,19 +22,19 @@
   --background-color: #ffffff; /* Background color for the entire website, including individual sections */
   --default-color: #444444; /* Default color used for the majority of the text content across the entire website */
   --heading-color: #37423b; /* Color for headings, subheadings and title throughout the website */
-  --accent-color: #5fcf80; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
+  --accent-color: #222222; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
   --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
   --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
 }
 
 /* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
 :root {
-  --nav-color: #272828;  /* The default color of the main navmenu links */
-  --nav-hover-color: #5fcf80; /* Applied to main navmenu links when they are hovered over or active */
+  --nav-color: #222222;  /* The default color of the main navmenu links */
+  --nav-hover-color: #169976; /* Applied to main navmenu links when they are hovered over or active */
   --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
   --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
-  --nav-dropdown-color: #272828; /* Used for navigation links of the dropdown items in the navigation menu. */
-  --nav-dropdown-hover-color: #5fcf80; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
+  --nav-dropdown-color: #222222; /* Used for navigation links of the dropdown items in the navigation menu. */
+  --nav-dropdown-hover-color: #169976; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
 }
 
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
@@ -1886,4 +1886,71 @@ section,
 --------------------------------------------------------------*/
 .starter-section {
   /* Add your styles here */
+}
+
+/* === MentorMe button theme === */
+
+/* Primary buttons (used by "Post a Job", etc.) */
+.btn-primary,
+.btn-primary:focus {
+  background-color: #169976;
+  border-color: #169976;
+  color: #ffffff;
+}
+.btn-primary:hover,
+.btn-primary:active {
+  background-color: #138d69; /* slightly darker hover */
+  border-color: #138d69;
+}
+
+/* Outline variant to match brand */
+.btn-outline-primary,
+.btn-outline-primary:focus {
+  color: #169976;
+  border-color: #169976;
+  background-color: transparent;
+}
+.btn-outline-primary:hover,
+.btn-outline-primary:active {
+  color: #ffffff;
+  background-color: #169976;
+  border-color: #169976;
+}
+
+/* Pricing page "Buy" buttons (class from the template) */
+.btn-buy {
+  background: #169976;
+  border: 1px solid #169976;
+  color: #ffffff;
+}
+.btn-buy:hover,
+.btn-buy:focus {
+  background: #138d69;
+  border-color: #138d69;
+  color: #ffffff;
+}
+
+/* If you want ALL green buttons (e.g., Take Job) to use brand color,
+   re-tint Bootstrap's success variant too: */
+.btn-success,
+.btn-success:focus {
+  background-color: #169976;
+  border-color: #169976;
+}
+.btn-success:hover,
+.btn-success:active {
+  background-color: #138d69;
+  border-color: #138d69;
+}
+/* Brand badge */
+.badge-brand {
+  background-color: #169976; /* brand green */
+  color: #ffffff;            /* readable on green */
+}
+
+/* Optional outline style if you ever need it */
+.badge-outline-brand {
+  background-color: transparent;
+  color: #169976;
+  border: 1px solid #169976;
 }

@@ -119,7 +119,7 @@
                     <a class="btn btn-outline-primary ms-2"
                        href="{% url 'profile' %}"
                        {% if request.path == '/accounts/profile/' %}aria-current="page"{% endif %}>Profile</a>
-                    <span class="badge bg-success ms-2">{{ user.role }}</span>
+                    <span class="badge badge-brand ms-2">{{ user.role }}</span>
                     <form class="d-inline ms-2" method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
                         <button class="btn btn-primary" type="submit">Logout</button>
