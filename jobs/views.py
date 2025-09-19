@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
@@ -13,6 +14,24 @@ class JobListView(ListView):
     template_name = "job-list.html"
     model = Job
     context_object_name = "jobs"
+    paginate_by = 9  # <- pagination
+
+    def get_queryset(self):
+        qs = super().get_queryset().order_by("-created_at")
+        q = self.request.GET.get("q")
+        mode = self.request.GET.get("mode")
+        status = self.request.GET.get("status")
+        if q:
+            qs = qs.filter(
+                Q(title__icontains=q)
+                | Q(description__icontains=q)
+                | Q(subject__icontains=q)
+            )
+        if mode in dict(Job.Mode.choices):
+            qs = qs.filter(mode=mode)
+        if status in dict(Job.Status.choices):
+            qs = qs.filter(status=status)
+        return qs
 
 
 class JobCreateView(LoginRequiredMixin, CreateView):

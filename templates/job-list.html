@@ -8,9 +8,11 @@
                 <div class="container">
                     <div class="row d-flex justify-content-center text-center">
                         <div class="col-lg-8">
-                            <h1>Courses</h1>
+                            <h1>Jobs</h1>
+                            {# was: Courses #}
                             <p class="mb-0">
-                                Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo odio sint voluptas consequatur ut a odio voluptatem. Sit dolorum debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat ipsum dolorem.
+                                Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo odio sint voluptas consequatur ut a odio voluptatem.
+                                Sit dolorum debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat ipsum dolorem.
                             </p>
                         </div>
                     </div>
@@ -22,16 +24,53 @@
                         <li>
                             <a href="/">Home</a>
                         </li>
-                        <li class="current">Courses</li>
+                        <li class="current">Jobs</li>
+                        {# was: Courses #}
                     </ol>
                 </div>
             </nav>
         </div>
         <!-- End Page Title -->
-        <!-- Courses Section -->
+        <!-- Jobs Section -->
         <section id="courses" class="courses section">
             <div class="container">
-                <div class="container mb-3">
+                {# Filter toolbar #}
+                <form class="row g-2 mb-3" method="get">
+                    <div class="col-md-4">
+                        <input type="text"
+                               name="q"
+                               value="{{ request.GET.q }}"
+                               class="form-control"
+                               placeholder="Search jobs">
+                    </div>
+                    <div class="col-md-3">
+                        <select name="mode" class="form-select">
+                            <option value="">All modes</option>
+                            <option value="first" {% if request.GET.mode == "first" %}selected{% endif %}>First-come</option>
+                            <option value="offers"
+                                    {% if request.GET.mode == "offers" %}selected{% endif %}>Offers</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="status" class="form-select">
+                            <option value="">All status</option>
+                            <option value="open" {% if request.GET.status == "open" %}selected{% endif %}>Open</option>
+                            <option value="in_progress"
+                                    {% if request.GET.status == "in_progress" %}selected{% endif %}>
+                                In Progress
+                            </option>
+                            <option value="closed"
+                                    {% if request.GET.status == "closed" %}selected{% endif %}>Closed</option>
+                            <option value="cancelled"
+                                    {% if request.GET.status == "cancelled" %}selected{% endif %}>Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-grid">
+                        <button class="btn btn-outline-primary" type="submit">Filter</button>
+                    </div>
+                </form>
+                {# Post job CTA #}
+                <div class="container mb-3 px-0">
                     {% if user.is_authenticated %}
                         <a class="btn btn-primary" href="{% url 'job-create' %}">Post a Job</a>
                     {% else %}
@@ -116,10 +155,40 @@
                                 </div>
                             </div>
                         </div>
+                    {% empty %}
+                        <div class="col-12 text-center text-muted py-5">No jobs found. Try adjusting filters.</div>
                     {% endfor %}
                 </div>
+                {# Pagination #}
+                {% if is_paginated %}
+                    {% with q=request.GET.q m=request.GET.mode s=request.GET.status %}
+                        <nav aria-label="Page navigation" class="mt-3">
+                            <ul class="pagination justify-content-center">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="?{% if q %}q={{ q }}&{% endif %}{% if m %}mode={{ m }}&{% endif %}{% if s %}status={{ s }}&{% endif %}page={{ page_obj.previous_page_number }}">
+                                            Previous
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                                </li>
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                           href="?{% if q %}q={{ q }}&{% endif %}{% if m %}mode={{ m }}&{% endif %}{% if s %}status={{ s }}&{% endif %}page={{ page_obj.next_page_number }}">
+                                            Next
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endwith %}
+                {% endif %}
             </div>
         </section>
-        <!-- /Courses Section -->
+        <!-- /Jobs Section -->
     </main>
 {% endblock %}

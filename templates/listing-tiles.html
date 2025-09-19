@@ -3,10 +3,10 @@
 <section id="courses" class="courses section">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 col-md-6 d-flex align-items-stretch"
-                 data-aos="zoom-in"
-                 data-aos-delay="100">
-                {% for listing in listings %}
+            {% for listing in listings %}
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch"
+                     data-aos="zoom-in"
+                     data-aos-delay="100">
                     <div class="course-item">
                         <img src="{% static 'img/course-1.jpg' %}" class="img-fluid" alt="...">
                         <div class="course-content">
@@ -39,9 +39,11 @@
                             </div>
                         </div>
                     </div>
-                    <!-- End Course Item-->
-                {% endfor %}
-            </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center text-muted py-5">No listings found. Try adjusting filters.</div>
+            {% endfor %}
         </div>
-    </section>
-    <!-- /Courses Section -->
+    </div>
+</section>
+<!-- /Courses Section -->
