@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
@@ -13,7 +15,7 @@ from .models import Plan, Subscription
 class PricingView(TemplateView):
     template_name = "pricing.html"
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
         ctx = super().get_context_data(**kwargs)
         ctx["plans"] = Plan.objects.order_by("level")
         user = self.request.user

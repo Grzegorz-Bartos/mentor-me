@@ -1,7 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
+from django.db.models import Q, QuerySet
+from django.http import (
+    Http404,
+    HttpRequest,
+    HttpResponse,
+    HttpResponsePermanentRedirect,
+    HttpResponseRedirect,
+)
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
@@ -16,7 +23,9 @@ class JobListView(ListView):
     context_object_name = "jobs"
     paginate_by = 9  # <- pagination
 
-    def get_queryset(self):
+    def get_queryset(
+        self,
+    ) -> QuerySet[Job]:  # TODO django filter zamiast ręcznego querowania
         qs = super().get_queryset().order_by("-created_at")
         q = self.request.GET.get("q")
         mode = self.request.GET.get("mode")
@@ -51,7 +60,7 @@ class JobDetailView(DetailView):
 
 
 @login_required
-def take_job(request, pk):
+def take_job(request: HttpRequest, pk: int) -> HttpResponseRedirect:
     job = get_object_or_404(
         Job, pk=pk, status=Job.Status.OPEN, mode=Job.Mode.FIRST_COME
     )
@@ -68,7 +77,7 @@ def take_job(request, pk):
 
 
 @login_required
-def submit_offer(request, pk):
+def submit_offer(request: HttpRequest, pk: int) -> HttpResponse | None:
     job = get_object_or_404(Job, pk=pk, status=Job.Status.OPEN, mode=Job.Mode.OFFERS)
     if not request.user.can_take_jobs:
         messages.error(request, "Upgrade to Freelancer to submit offers.")
@@ -87,7 +96,9 @@ def submit_offer(request, pk):
 
 
 @login_required
-def accept_offer(request, job_id, proposal_id):
+def accept_offer(
+    request: HttpRequest, job_id: int, proposal_id: int
+) -> HttpResponseRedirect:
     job = get_object_or_404(Job, pk=job_id)
     if job.user != request.user:
         messages.error(request, "Only the job owner can accept offers.")

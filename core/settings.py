@@ -11,7 +11,7 @@ SECRET_KEY = env("SECRET_KEY")
 
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS: list[str] = []
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -31,7 +31,6 @@ INSTALLED_EXTENSIONS = [
     "listings",
     "jobs",
     "mentors",
-    "dashboard",
     "payments",
     "subscriptions",
 ]

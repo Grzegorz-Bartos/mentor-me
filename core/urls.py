@@ -1,10 +1,9 @@
-from debug_toolbar.toolbar import debug_toolbar_urls
+from debug_toolbar.toolbar import debug_toolbar_urls  # type: ignore
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-from dashboard.views import AboutView, ContactView
 from home import views as home_views
 from jobs.views import (
     JobCreateView,
@@ -39,8 +38,6 @@ urlpatterns = [
         name="job-accept-offer",
     ),
     path("mentoring/", listings_views.MentorListView.as_view(), name="mentors"),
-    path("about/", AboutView.as_view(), name="about"),
-    path("contact/", ContactView.as_view(), name="contact"),
     path("pricing/", subscriptions_views.PricingView.as_view(), name="pricing"),
     path(
         "pricing/change/<int:plan_id>/",

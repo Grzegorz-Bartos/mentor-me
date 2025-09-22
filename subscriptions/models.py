@@ -16,7 +16,7 @@ class Plan(models.Model):
     class Meta:
         ordering = ["level"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -29,5 +29,5 @@ class Subscription(models.Model):
     expires_at = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.user} -> {self.plan}"
