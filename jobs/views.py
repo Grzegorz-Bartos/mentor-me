@@ -27,6 +27,7 @@ class JobListView(ListView):
         self,
     ) -> QuerySet[Job]:  # TODO django filter zamiast ręcznego querowania
         qs = super().get_queryset().order_by("-created_at")
+        qs = super().get_queryset().select_related("user").order_by("-created_at")
         q = self.request.GET.get("q")
         mode = self.request.GET.get("mode")
         status = self.request.GET.get("status")

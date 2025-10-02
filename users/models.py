@@ -1,3 +1,5 @@
+from urllib.parse import quote_plus
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -17,6 +19,23 @@ class Account(AbstractUser):
     @property
     def role(self) -> str:
         return self.get_role_level_display()
+
+    @property
+    def display_name(self) -> str:
+        """Return the most user-friendly name to show for the account."""
+
+        full_name = (self.get_full_name() or "").strip()
+        return full_name or self.username
+
+    @property
+    def avatar_url(self) -> str:
+        """Generate a deterministic avatar URL based on the user's name."""
+
+        name_for_avatar = quote_plus(self.display_name or self.username)
+        return (
+            "https://ui-avatars.com/api/?"
+            f"name={name_for_avatar}&background=random&color=ffffff&size=128"
+        )
 
     @property
     def can_browse(self) -> bool:
