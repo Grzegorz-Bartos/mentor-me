@@ -20,6 +20,7 @@ class ListingListView(ListView):
         qs = (
             super()
             .get_queryset()
+            .select_related("user")
             .filter(type=Listing.ListingType.TUTOR, is_active=True)
             .order_by("-created_at")
         )
@@ -50,6 +51,7 @@ class MentorListView(ListView):
         qs = (
             super()
             .get_queryset()
+            .select_related("user")
             .filter(type=Listing.ListingType.MENTOR, is_active=True)
             .order_by("-created_at")
         )

@@ -137,21 +137,20 @@
                                             {% endfor %}
                                         </div>
                                     {% endif %}
-                                    {% if user.is_authenticated %}
-                                        <div class="trainer d-flex justify-content-between align-items-center mt-3">
-                                            <div class="trainer-profile d-flex align-items-center">
-                                                <img src="{% static 'img/trainers/trainer-1-2.jpg' %}"
-                                                     class="img-fluid"
-                                                     alt="">
-                                                <a href="/" class="trainer-link">{{ job.user.username }}</a>
-                                            </div>
-                                            <div class="trainer-rank d-flex align-items-center">
-                                                <i class="bi bi-person user-icon"></i>&nbsp;50
-                                                &nbsp;&nbsp;
-                                                <i class="bi bi-heart heart-icon"></i>&nbsp;65
+                                    <div class="trainer d-flex justify-content-between align-items-center mt-3">
+                                        <div class="trainer-profile d-flex align-items-center">
+                                            <img src="{{ job.user.avatar_url }}"
+                                                 class="img-fluid rounded-circle me-2"
+                                                 alt="Avatar for {{ job.user.display_name }}">
+                                            <div>
+                                                <span class="trainer-link d-block">{{ job.user.display_name }}</span>
+                                                <small class="text-muted">{{ job.user.role }}</small>
                                             </div>
                                         </div>
-                                    {% endif %}
+                                        <div class="trainer-rank text-end">
+                                            <small class="text-muted">Posted {{ job.created_at|date:"M j, Y" }}</small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
