@@ -54,11 +54,35 @@ jobs:
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root --with dev
+      - name: Set up environment variables
+        run: |
+          echo "DB_NAME=test_db" >> .env
+          echo "DB_USER=postgres" >> .env
+          echo "DB_PASSWORD=postgres" >> .env
+          echo "DB_HOST=localhost" >> .env
+          echo "DB_PORT=5432" >> .env
+      - name: Run tests with coverage
+        run: |
+          poetry run coverage run --source='.' manage.py test --parallel --keepdb
+          poetry run coverage report -m
+          poetry run coverage xml
+          poetry run coverage html
+      - name: Upload coverage HTML report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-html-report
+          path: htmlcov/
+          retention-days: 14
+      - name: Test summary
+        if: always()
+        run: |
+          if [ -f coverage.xml ]; then
+            echo "Tests completed with coverage report"
+          else
+            echo "Tests failed or coverage report not generated"
+          fi
 
-# Ustawienie zmiennych środowiskowych
-# Poczekanie na postgres dla pewności
-# Uruchomienie testów z covergae
-# Upload coverage HTML
-# Collect logów
+
+
 # Test summary
-# Upload CodeCov (Optional)
