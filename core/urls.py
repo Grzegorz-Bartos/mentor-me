@@ -19,6 +19,7 @@ from subscriptions import views as subscriptions_views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", home_views.HomeView.as_view(), name="home"),
+    path("about/", home_views.AboutView.as_view(), name="about"),
     path("accounts/", include("users.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
     path("listings/", listings_views.ListingListView.as_view(), name="listings"),
