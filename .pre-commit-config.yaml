@@ -27,9 +27,9 @@ repos:
       - id: bandit
 #        args: ["c", "pyproject.toml"]
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.6
+    rev: v0.14.0
     hooks:
-#      - id: ruff-check
+      - id: ruff-check
       - id: ruff-format
 -   repo: https://github.com/djlint/djLint
     rev: v1.36.4
