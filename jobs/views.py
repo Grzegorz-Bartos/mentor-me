@@ -9,7 +9,7 @@ from django.http import (
 )
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView
 
 from .forms import JobForm, ProposalForm
 from .models import Job, Proposal
@@ -66,6 +66,10 @@ class JobDetailView(DetailView):
 def take_job(request: HttpRequest, pk: int) -> HttpResponseRedirect:
     job = get_object_or_404(Job, pk=pk, mode=Job.Mode.FIRST_COME)
 
+    if job.user == request.user:
+        messages.error(request, "You cannot take your own job.")
+        return redirect("job-detail", pk=job.pk)
+
     if job.status != Job.Status.OPEN:
         messages.error(request, "This job is no longer available.")
         return redirect("job-detail", pk=job.pk)
@@ -86,9 +90,15 @@ def take_job(request: HttpRequest, pk: int) -> HttpResponseRedirect:
 @login_required
 def submit_offer(request: HttpRequest, pk: int) -> HttpResponse | None:
     job = get_object_or_404(Job, pk=pk, status=Job.Status.OPEN, mode=Job.Mode.OFFERS)
+
+    if job.user == request.user:
+        messages.error(request, "You cannot submit an offer to your own job.")
+        return redirect("job-detail", pk=job.pk)
+
     if not request.user.can_take_jobs:
         messages.error(request, "Upgrade to Freelancer to submit offers.")
         return redirect("pricing")
+
     if request.method == "POST":
         form = ProposalForm(request.POST)
         if form.is_valid():
@@ -118,3 +128,16 @@ def accept_offer(
     job.save(update_fields=["status"])
     messages.success(request, "Offer accepted.")
     return redirect("jobs")
+
+
+class JobDeleteView(LoginRequiredMixin, DeleteView):
+    model = Job
+    template_name = "job_confirm_delete.html"
+    success_url = reverse_lazy("profile")
+
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, "Job deleted successfully.")
+        return super().delete(request, *args, **kwargs)

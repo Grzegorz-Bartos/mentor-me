@@ -1,7 +1,8 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, DeleteView, ListView
 
 from core.mixins import CapabilityRequiredMixin
 
@@ -95,3 +96,16 @@ class CreateListingView(CapabilityRequiredMixin, LoginRequiredMixin, CreateView)
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class ListingDeleteView(LoginRequiredMixin, DeleteView):
+    model = Listing
+    template_name = "listing_confirm_delete.html"
+    success_url = reverse_lazy("profile")
+
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, "Listing deleted successfully.")
+        return super().delete(request, *args, **kwargs)

@@ -7,6 +7,7 @@ from django.urls import include, path
 from home import views as home_views
 from jobs.views import (
     JobCreateView,
+    JobDeleteView,
     JobDetailView,
     JobListView,
     accept_offer,
@@ -28,9 +29,15 @@ urlpatterns = [
         listings_views.CreateListingView.as_view(),
         name="create-listing",
     ),
+    path(
+        "listings/<int:pk>/delete/",
+        listings_views.ListingDeleteView.as_view(),
+        name="listing-delete",
+    ),
     path("jobs/", JobListView.as_view(), name="jobs"),
     path("jobs/create/", JobCreateView.as_view(), name="job-create"),
     path("jobs/<int:pk>/", JobDetailView.as_view(), name="job-detail"),
+    path("jobs/<int:pk>/delete/", JobDeleteView.as_view(), name="job-delete"),
     path("jobs/<int:pk>/take/", take_job, name="job-take"),
     path("jobs/<int:pk>/offer/", submit_offer, name="job-offer"),
     path(

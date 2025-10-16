@@ -104,27 +104,33 @@
                                     </h3>
                                     <p class="description">{{ job.description|truncatechars:140 }}</p>
                                     {# Action buttons #}
-                                    <div class="mt-2 d-flex gap-2 flex-wrap">
-                                        {% if job.mode == "first" %}
-                                            {% if user.is_authenticated and user.can_take_jobs %}
-                                                <a class="btn btn-success btn-sm" href="{% url 'job-take' job.id %}">Take Job</a>
-                                            {% elif user.is_authenticated %}
-                                                <a class="btn btn-outline-secondary btn-sm disabled">Upgrade to Freelancer to take jobs</a>
-                                            {% else %}
-                                                <a class="btn btn-success btn-sm"
-                                                   href="{% url 'login' %}?next={% url 'job-take' job.id %}">Login to take</a>
+                                    {% if user.is_authenticated and user.id == job.user.id %}
+                                        <div class="mt-2">
+                                            <span class="badge bg-secondary">Your Job</span>
+                                        </div>
+                                    {% else %}
+                                        <div class="mt-2 d-flex gap-2 flex-wrap">
+                                            {% if job.mode == "first" %}
+                                                {% if user.is_authenticated and user.can_take_jobs %}
+                                                    <a class="btn btn-success btn-sm" href="{% url 'job-take' job.id %}">Take Job</a>
+                                                {% elif user.is_authenticated %}
+                                                    <a class="btn btn-outline-secondary btn-sm disabled">Upgrade to Freelancer to take jobs</a>
+                                                {% else %}
+                                                    <a class="btn btn-success btn-sm"
+                                                       href="{% url 'login' %}?next={% url 'job-take' job.id %}">Login to take</a>
+                                                {% endif %}
+                                            {% elif job.mode == "offers" %}
+                                                {% if user.is_authenticated and user.can_take_jobs %}
+                                                    <a class="btn btn-primary btn-sm" href="{% url 'job-offer' job.id %}">Submit Offer</a>
+                                                {% elif user.is_authenticated %}
+                                                    <a class="btn btn-outline-secondary btn-sm disabled">Upgrade to Freelancer to offer</a>
+                                                {% else %}
+                                                    <a class="btn btn-primary btn-sm"
+                                                       href="{% url 'login' %}?next={% url 'job-offer' job.id %}">Login to offer</a>
+                                                {% endif %}
                                             {% endif %}
-                                        {% elif job.mode == "offers" %}
-                                            {% if user.is_authenticated and user.can_take_jobs %}
-                                                <a class="btn btn-primary btn-sm" href="{% url 'job-offer' job.id %}">Submit Offer</a>
-                                            {% elif user.is_authenticated %}
-                                                <a class="btn btn-outline-secondary btn-sm disabled">Upgrade to Freelancer to offer</a>
-                                            {% else %}
-                                                <a class="btn btn-primary btn-sm"
-                                                   href="{% url 'login' %}?next={% url 'job-offer' job.id %}">Login to offer</a>
-                                            {% endif %}
-                                        {% endif %}
-                                    </div>
+                                        </div>
+                                    {% endif %}
                                     {# Owner can accept offers #}
                                     {% if user.is_authenticated and user.id == job.user_id and job.mode == "offers" %}
                                         <div class="mt-2">

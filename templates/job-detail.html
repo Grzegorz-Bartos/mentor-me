@@ -148,7 +148,13 @@
                                 </div>
                             {% endif %}
                             {% if user.is_authenticated %}
-                                {% if job.status == "open" %}
+                                {% if user.id == job.user.id %}
+                                    <div class="alert alert-info">
+                                        <strong>Your Job</strong>
+                                        <p class="mb-0 small">This is your job posting.</p>
+                                    </div>
+                                    <a href="{% url 'job-delete' job.id %}" class="btn btn-danger w-100">Delete Job</a>
+                                {% elif job.status == "open" %}
                                     {% if job.mode == "first" and user.can_take_jobs %}
                                         <a href="{% url 'job-take' job.id %}"
                                            class="btn btn-success w-100">Take This Job</a>

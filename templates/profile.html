@@ -55,13 +55,16 @@
                                                 <strong>{{ l.title }}</strong>
                                                 <small class="text-muted ms-2">({{ l.get_type_display }})</small>
                                             </span>
-                                            <span>
-                                                {% if l.rate_unit == "hourly" %}
-                                                    ${{ l.price }}/hour
-                                                {% else %}
-                                                    ${{ l.price }}
-                                                {% endif %}
-                                            </span>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span>
+                                                    {% if l.rate_unit == "hourly" %}
+                                                        ${{ l.price }}/hour
+                                                    {% else %}
+                                                        ${{ l.price }}
+                                                    {% endif %}
+                                                </span>
+                                                <a href="{% url 'listing-delete' l.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                                            </div>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -125,6 +128,10 @@
                                                     {% else %}
                                                         <p class="text-muted">First-come job — no offers.</p>
                                                     {% endif %}
+                                                    <div class="mt-3 d-flex gap-2">
+                                                        <a href="{% url 'job-detail' j.id %}" class="btn btn-sm btn-outline-primary">View Details</a>
+                                                        <a href="{% url 'job-delete' j.id %}" class="btn btn-sm btn-outline-danger">Delete Job</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
