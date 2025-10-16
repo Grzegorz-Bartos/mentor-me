@@ -134,3 +134,12 @@ AUTH_USER_MODEL = "users.Account"
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "boostrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://mentorme-hxs3.onrender.com",
+    "https://*.onrender.com",
+]
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
