@@ -64,19 +64,23 @@ class JobDetailView(DetailView):
 
 @login_required
 def take_job(request: HttpRequest, pk: int) -> HttpResponseRedirect:
-    job = get_object_or_404(
-        Job, pk=pk, status=Job.Status.OPEN, mode=Job.Mode.FIRST_COME
-    )
+    job = get_object_or_404(Job, pk=pk, mode=Job.Mode.FIRST_COME)
+
+    if job.status != Job.Status.OPEN:
+        messages.error(request, "This job is no longer available.")
+        return redirect("job-detail", pk=job.pk)
+
     if not request.user.can_take_jobs:
         messages.error(request, "Upgrade to Freelancer to take jobs.")
         return redirect("pricing")
+
     Proposal.objects.update_or_create(
         job=job, user=request.user, defaults={"is_accepted": True}
     )
     job.status = Job.Status.IN_PROGRESS
     job.save(update_fields=["status"])
-    messages.success(request, "You have taken this job.")
-    return redirect("jobs")
+    messages.success(request, f"You have taken the job: {job.title}")
+    return redirect("job-detail", pk=job.pk)
 
 
 @login_required
