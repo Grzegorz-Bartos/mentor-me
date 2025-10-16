@@ -11,7 +11,7 @@ SECRET_KEY = env("SECRET_KEY")
 
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS: list[str] = []
+ALLOWED_HOSTS: list[str] = ["mentorme-hxs3.onrender.com"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
