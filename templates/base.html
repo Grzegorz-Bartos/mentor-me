@@ -75,16 +75,21 @@
                 </nav>
                 {# Auth actions in navbar #}
                 {% if user.is_authenticated %}
-                    <a class="btn btn-outline-primary ms-2"
-                       href="{% url 'profile' %}"
-                       {% if request.path == '/accounts/profile/' %}aria-current="page"{% endif %}>Profile</a>
-                    <span class="badge badge-brand ms-2">{{ user.role }}</span>
-                    <form class="d-inline ms-2" method="post" action="{% url 'logout' %}">
-                        {% csrf_token %}
-                        <button class="btn btn-primary" type="submit">Logout</button>
-                    </form>
+                    <div class="d-flex align-items-center gap-3 ms-3">
+                        <a class="btn btn-sm btn-primary"
+                           href="{% url 'profile' %}"
+                           {% if request.path == '/accounts/profile/' %}aria-current="page"{% endif %}>
+                            <i class="bi bi-person-circle me-1"></i>{{ user.role }}
+                        </a>
+                        <form class="d-inline" method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-outline-secondary" type="submit" title="Logout">
+                                <i class="bi bi-box-arrow-right"></i>
+                            </button>
+                        </form>
+                    </div>
                 {% else %}
-                    <a class="btn btn-primary ms-2" href="{% url 'login' %}">Login</a>
+                    <a class="btn btn-primary ms-3" href="{% url 'login' %}">Login</a>
                     <a class="btn btn-outline-primary ms-2" href="{% url 'signup' %}">Sign up</a>
                 {% endif %}
             </div>
