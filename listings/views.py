@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, ListView
+from django.views.generic import CreateView, DeleteView, DetailView, ListView
 
 from core.mixins import CapabilityRequiredMixin
 
@@ -72,30 +72,67 @@ class MentorListView(ListView):
         return qs
 
 
-class CreateListingView(CapabilityRequiredMixin, LoginRequiredMixin, CreateView):
+class CreateTutorListingView(LoginRequiredMixin, CreateView):
     template_name = "create-listing.html"
     form_class = ListingCreationForm
     model = Listing
     success_url = reverse_lazy("listings")
-    capability_name = None
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        selected_type = (
-            self.request.POST.get("type")
-            if self.request.method == "POST"
-            else Listing.ListingType.TUTOR
-        )
-        self.capability_name = (
-            "can_post_mentor"
-            if selected_type == Listing.ListingType.MENTOR
-            else "can_post_tutor"
-        )
-        return kwargs
+    def dispatch(self, request, *args, **kwargs):
+        from django.contrib import messages
+        from django.shortcuts import redirect
+
+        if not request.user.can_post_tutor:
+            messages.error(request, "You need to be a Tutor or higher to create tutor listings.")
+            return redirect("pricing")
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['listing_type'] = 'tutor'
+        return context
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        form.instance.type = Listing.ListingType.TUTOR
         return super().form_valid(form)
+
+
+class CreateMentorListingView(LoginRequiredMixin, CreateView):
+    template_name = "create-listing.html"
+    form_class = ListingCreationForm
+    model = Listing
+    success_url = reverse_lazy("mentors")
+
+    def dispatch(self, request, *args, **kwargs):
+        from django.contrib import messages
+        from django.shortcuts import redirect
+
+        if not request.user.can_post_mentor:
+            messages.error(request, "You need to be a Mentor to create mentor listings.")
+            return redirect("pricing")
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['listing_type'] = 'mentor'
+        return context
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.type = Listing.ListingType.MENTOR
+        return super().form_valid(form)
+
+
+class ListingDetailView(DetailView):
+    model = Listing
+    template_name = "listing-detail.html"
+    context_object_name = "listing"
+
+    def get_queryset(self):
+        return super().get_queryset().select_related("user").filter(is_active=True)
 
 
 class ListingDeleteView(LoginRequiredMixin, DeleteView):

@@ -26,13 +26,23 @@ urlpatterns = [
     path("listings/", listings_views.ListingListView.as_view(), name="listings"),
     path(
         "listings/create/",
-        listings_views.CreateListingView.as_view(),
+        listings_views.CreateTutorListingView.as_view(),
         name="create-listing",
+    ),
+    path(
+        "listings/<int:pk>/",
+        listings_views.ListingDetailView.as_view(),
+        name="listing-detail",
     ),
     path(
         "listings/<int:pk>/delete/",
         listings_views.ListingDeleteView.as_view(),
         name="listing-delete",
+    ),
+    path(
+        "mentoring/create/",
+        listings_views.CreateMentorListingView.as_view(),
+        name="create-mentor-listing",
     ),
     path("jobs/", JobListView.as_view(), name="jobs"),
     path("jobs/create/", JobCreateView.as_view(), name="job-create"),

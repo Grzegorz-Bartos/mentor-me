@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <main class="main">
+        <div class="page-title" data-aos="fade">
+            <div class="heading">
+                <div class="container">
+                    <div class="row d-flex justify-content-center text-center">
+                        <div class="col-lg-8">
+                            <h1>{{ listing.title }}</h1>
+                            <p class="mb-0">
+                                <span class="badge bg-primary">{{ listing.get_type_display }}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nav class="breadcrumbs">
+                <div class="container">
+                    <ol>
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'listings' %}">Listings</a>
+                        </li>
+                        <li class="current">{{ listing.title }}</li>
+                    </ol>
+                </div>
+            </nav>
+        </div>
+        <section class="section">
+            <div class="container" data-aos="fade-up">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="p-4 border rounded-3">
+                            <h3 class="mb-3">Description</h3>
+                            <p>{{ listing.description }}</p>
+                            {% if listing.subject %}
+                                <div class="mt-3">
+                                    <strong>Subject:</strong> <span class="badge bg-light text-dark">{{ listing.subject }}</span>
+                                </div>
+                            {% endif %}
+                            {% if listing.category %}
+                                <div class="mt-3">
+                                    <strong>Category:</strong> <span class="badge bg-light text-dark">{{ listing.category }}</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="p-4 border rounded-3 sticky-top" style="top: 100px;">
+                            <h5 class="mb-3">Listing Details</h5>
+                            <div class="mb-3">
+                                <strong>Posted by:</strong>
+                                <div class="d-flex align-items-center mt-2">
+                                    <img src="{{ listing.user.avatar_url }}"
+                                         class="rounded-circle me-2"
+                                         alt="{{ listing.user.display_name }}"
+                                         width="40"
+                                         height="40">
+                                    <div>
+                                        <div>{{ listing.user.display_name }}</div>
+                                        <small class="text-muted">{{ listing.user.role }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="mb-3">
+                                <strong>Price:</strong>
+                                <div>
+                                    {% if listing.rate_unit == "hourly" %}
+                                        ${{ listing.price }}/hour
+                                    {% else %}
+                                        ${{ listing.price }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Posted:</strong>
+                                <div>{{ listing.created_at|date:"M j, Y" }}</div>
+                            </div>
+                            <hr>
+                            {% if user.is_authenticated and user.id == listing.user.id %}
+                                <div class="alert alert-info">
+                                    <strong>Your Listing</strong>
+                                    <p class="mb-0 small">This is your listing.</p>
+                                </div>
+                                <a href="{% url 'listing-delete' listing.id %}" class="btn btn-danger w-100">Delete Listing</a>
+                            {% else %}
+                                <p class="text-muted small">Contact the tutor to arrange sessions.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}

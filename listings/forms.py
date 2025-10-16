@@ -7,7 +7,6 @@ class ListingCreationForm(forms.ModelForm):
     class Meta:
         model = Listing
         fields = [
-            "type",
             "title",
             "description",
             "price",
