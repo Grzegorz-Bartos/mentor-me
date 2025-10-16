@@ -11,10 +11,7 @@ SECRET_KEY = env("SECRET_KEY")
 
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS: list[str] = [
-    "mentorme-hxs3.onrender.com",
-    "127.0.0.1"
-]
+ALLOWED_HOSTS: list[str] = ["mentorme-hxs3.onrender.com", "127.0.0.1"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -119,6 +116,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
