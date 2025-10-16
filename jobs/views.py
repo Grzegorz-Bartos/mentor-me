@@ -91,7 +91,7 @@ def submit_offer(request: HttpRequest, pk: int) -> HttpResponse | None:
             return redirect("jobs")
     else:
         form = ProposalForm()
-    return render(request, "starter-page.html", {"form": form, "job": job})
+    return render(request, "job-offer.html", {"form": form, "job": job})
 
 
 @login_required
