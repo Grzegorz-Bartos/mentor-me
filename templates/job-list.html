@@ -11,8 +11,7 @@
                             <h1>Jobs</h1>
                             {# was: Courses #}
                             <p class="mb-0">
-                                Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo odio sint voluptas consequatur ut a odio voluptatem.
-                                Sit dolorum debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat ipsum dolorem.
+                                Browse student coding projects and opportunities. Students post jobs they need help with, and freelancers can take them or submit offers.
                             </p>
                         </div>
                     </div>
@@ -32,51 +31,55 @@
         </div>
         <!-- End Page Title -->
         <!-- Jobs Section -->
-        <section id="courses" class="courses section">
+        <section id="jobs" class="courses section">
             <div class="container">
-                {# Filter toolbar #}
-                <form class="row g-2 mb-3" method="get">
-                    <div class="col-md-4">
-                        <input type="text"
-                               name="q"
-                               value="{{ request.GET.q }}"
-                               class="form-control"
-                               placeholder="Search jobs">
+                <div class="row g-2 mb-3 align-items-center">
+                    {# Post job CTA #}
+                    <div class="col-auto">
+                        {% if user.is_authenticated %}
+                            <a class="btn btn-primary" href="{% url 'job-create' %}">Post a Job</a>
+                        {% else %}
+                            <a class="btn btn-primary"
+                               href="{% url 'login' %}?next={% url 'job-create' %}">Post a Job</a>
+                        {% endif %}
                     </div>
-                    <div class="col-md-3">
-                        <select name="mode" class="form-select">
-                            <option value="">All modes</option>
-                            <option value="first" {% if request.GET.mode == "first" %}selected{% endif %}>First-come</option>
-                            <option value="offers"
-                                    {% if request.GET.mode == "offers" %}selected{% endif %}>Offers</option>
-                        </select>
+                    {# Filter toolbar #}
+                    <div class="col">
+                        <form class="row g-2" method="get">
+                            <div class="col-md-4">
+                                <input type="text"
+                                       name="q"
+                                       value="{{ request.GET.q }}"
+                                       class="form-control"
+                                       placeholder="Search jobs">
+                            </div>
+                            <div class="col-md-3">
+                                <select name="mode" class="form-select">
+                                    <option value="">All modes</option>
+                                    <option value="first" {% if request.GET.mode == "first" %}selected{% endif %}>First-come</option>
+                                    <option value="offers"
+                                            {% if request.GET.mode == "offers" %}selected{% endif %}>Offers</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select name="status" class="form-select">
+                                    <option value="">All status</option>
+                                    <option value="open" {% if request.GET.status == "open" %}selected{% endif %}>Open</option>
+                                    <option value="in_progress"
+                                            {% if request.GET.status == "in_progress" %}selected{% endif %}>
+                                        In Progress
+                                    </option>
+                                    <option value="closed"
+                                            {% if request.GET.status == "closed" %}selected{% endif %}>Closed</option>
+                                    <option value="cancelled"
+                                            {% if request.GET.status == "cancelled" %}selected{% endif %}>Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 d-grid">
+                                <button class="btn btn-outline-primary" type="submit">Filter</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="col-md-3">
-                        <select name="status" class="form-select">
-                            <option value="">All status</option>
-                            <option value="open" {% if request.GET.status == "open" %}selected{% endif %}>Open</option>
-                            <option value="in_progress"
-                                    {% if request.GET.status == "in_progress" %}selected{% endif %}>
-                                In Progress
-                            </option>
-                            <option value="closed"
-                                    {% if request.GET.status == "closed" %}selected{% endif %}>Closed</option>
-                            <option value="cancelled"
-                                    {% if request.GET.status == "cancelled" %}selected{% endif %}>Cancelled</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2 d-grid">
-                        <button class="btn btn-outline-primary" type="submit">Filter</button>
-                    </div>
-                </form>
-                {# Post job CTA #}
-                <div class="container mb-3 px-0">
-                    {% if user.is_authenticated %}
-                        <a class="btn btn-primary" href="{% url 'job-create' %}">Post a Job</a>
-                    {% else %}
-                        <a class="btn btn-primary"
-                           href="{% url 'login' %}?next={% url 'job-create' %}">Post a Job</a>
-                    {% endif %}
                 </div>
                 <div class="row">
                     {% for job in jobs %}
@@ -152,10 +155,12 @@
                                         </div>
                                     </div>
                                 </div>
-                            {% empty %}
-                                <div class="col-12 text-center text-muted py-5">No jobs found. Try adjusting filters.</div>
-                            {% endfor %}
+                            </div>
                         </div>
+                    {% empty %}
+                        <div class="col-12 text-center text-muted py-5">No jobs found. Try adjusting filters.</div>
+                    {% endfor %}
+                </div>
                         {# Pagination #}
                         {% if is_paginated %}
                             {% with q=request.GET.q m=request.GET.mode s=request.GET.status %}
