@@ -55,7 +55,11 @@ class JobCreateView(LoginRequiredMixin, CreateView):
 
 class JobDetailView(DetailView):
     model = Job
-    template_name = "course-details.html"
+    template_name = "job-detail.html"
+    context_object_name = "job"
+
+    def get_queryset(self):
+        return super().get_queryset().select_related("user").prefetch_related("proposals__user")
 
 
 @login_required

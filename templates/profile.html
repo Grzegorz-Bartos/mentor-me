@@ -141,23 +141,29 @@
                                 <ul class="list-group">
                                     {% for p in my_offers %}
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span>
+                                            <div>
                                                 <strong>{{ p.job.title }}</strong>
                                                 <small class="text-muted ms-2">({{ p.job.get_status_display }})</small>
-                                            </span>
-                                            <span>
-                                                {% if p.price %}
-                                                    ${{ p.price }}
-                                                {% else %}
-                                                    —
+                                                {% if p.message %}
+                                                    <div class="text-muted small mt-1">{{ p.message|truncatechars:100 }}</div>
                                                 {% endif %}
-                                                {% if p.is_accepted %}<span class="badge bg-success ms-2">Accepted</span>{% endif %}
-                                            </span>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span>
+                                                    {% if p.price %}
+                                                        ${{ p.price }}
+                                                    {% else %}
+                                                        —
+                                                    {% endif %}
+                                                    {% if p.is_accepted %}<span class="badge bg-success ms-2">Accepted</span>{% endif %}
+                                                </span>
+                                                <a href="{% url 'job-detail' p.job.id %}" class="btn btn-sm btn-outline-primary">View Job</a>
+                                            </div>
                                         </li>
                                     {% endfor %}
                                 </ul>
                             {% else %}
-                                <p class="text-muted mb-0">You haven’t made any offers yet.</p>
+                                <p class="text-muted mb-0">You haven't made any offers yet.</p>
                             {% endif %}
                         </div>
                     </div>
