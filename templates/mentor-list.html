@@ -29,72 +29,89 @@
         </div>
         <!-- End Page Title -->
         <!-- Trainers Section -->
-        <section id="trainers" class="section trainers">
+        <section id="trainers" class="courses section">
             <div class="container">
-                <div class="mb-3">
-                    {% if user.is_authenticated %}
-                        <a class="btn btn-primary" href="{% url 'create-listing' %}">Create Listing</a>
-                    {% else %}
-                        <a class="btn btn-primary"
-                           href="{% url 'login' %}?next={% url 'create-listing' %}">Create Listing</a>
-                    {% endif %}
-                </div>
-                <form class="row g-2 mb-4" method="get">
-                    <div class="col-sm-4">
-                        <input type="text"
-                               name="q"
-                               value="{{ request.GET.q }}"
-                               class="form-control"
-                               placeholder="Search title / description / subject">
+                <div class="row g-2 mb-3 align-items-center">
+                    {# Create listing CTA #}
+                    <div class="col-auto">
+                        {% if user.is_authenticated %}
+                            <a class="btn btn-primary" href="{% url 'create-listing' %}">Create Listing</a>
+                        {% else %}
+                            <a class="btn btn-primary"
+                               href="{% url 'login' %}?next={% url 'create-listing' %}">Create Listing</a>
+                        {% endif %}
                     </div>
-                    <div class="col-sm-2">
-                        <input type="number"
-                               step="0.01"
-                               name="min"
-                               value="{{ request.GET.min }}"
-                               class="form-control"
-                               placeholder="Min price">
-                    </div>
-                    <div class="col-sm-2">
-                        <input type="number"
-                               step="0.01"
-                               name="max"
-                               value="{{ request.GET.max }}"
-                               class="form-control"
-                               placeholder="Max price">
-                    </div>
-                    <div class="col-sm-2">
-                        <button class="btn btn-outline-primary w-100" type="submit">Filter</button>
-                    </div>
-                    <div class="col-sm-2">
-                        <a class="btn btn-outline-secondary w-100" href="?">Reset</a>
-                    </div>
-                </form>
-                <div class="row gy-5">
-                    {% for listing in listings %}
-                        <div class="col-lg-4 col-md-6 member"
-                             data-aos="fade-up"
-                             data-aos-delay="100">
-                            <div class="member-img">
-                                <img src="{{ listing.user.avatar_url }}"
-                                     class="img-fluid"
-                                     alt="Avatar for {{ listing.user.display_name }}">
-                                <div class="social"></div>
+                    {# Filter toolbar #}
+                    <div class="col">
+                        <form class="row g-2" method="get">
+                            <div class="col-md-4">
+                                <input type="text"
+                                       name="q"
+                                       value="{{ request.GET.q }}"
+                                       class="form-control"
+                                       placeholder="Search title / description / subject">
                             </div>
-                            <div class="member-info text-center">
-                                <h4>{{ listing.title }}</h4>
-                                <span class="d-block text-muted mb-2">{{ listing.user.display_name }}</span>
-                                <p class="mb-3">{{ listing.description|truncatechars:160 }}</p>
-                                <div class="small text-muted">
-                                    <div>Focus: {{ listing.subject|default:listing.category|default:"General mentoring" }}</div>
-                                    <div>
-                                        {% if listing.rate_unit == "hourly" %}
-                                            Rate: ${{ listing.price }}/hour
-                                        {% else %}
-                                            Rate: ${{ listing.price }}
-                                        {% endif %}
+                            <div class="col-md-2">
+                                <input type="number"
+                                       step="0.01"
+                                       name="min"
+                                       value="{{ request.GET.min }}"
+                                       class="form-control"
+                                       placeholder="Min price">
+                            </div>
+                            <div class="col-md-2">
+                                <input type="number"
+                                       step="0.01"
+                                       name="max"
+                                       value="{{ request.GET.max }}"
+                                       class="form-control"
+                                       placeholder="Max price">
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-outline-primary w-100" type="submit">Filter</button>
+                            </div>
+                            <div class="col-md-2">
+                                <a class="btn btn-outline-secondary w-100" href="?">Reset</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for listing in listings %}
+                        <div class="col-lg-4 col-md-6 d-flex align-items-stretch"
+                             data-aos="zoom-in"
+                             data-aos-delay="100">
+                            <div class="course-item">
+                                <img src="{% static 'img/course-1.jpg' %}" class="img-fluid" alt="...">
+                                <div class="course-content">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <p class="category">{{ listing.subject|default:listing.category|default:"General" }}</p>
+                                        <p class="price">
+                                            {% if listing.rate_unit == "hourly" %}
+                                                ${{ listing.price }}/hour
+                                            {% else %}
+                                                ${{ listing.price }}
+                                            {% endif %}
+                                        </p>
                                     </div>
-                                    <div>Posted {{ listing.created_at|date:"M j, Y" }}</div>
+                                    <h3>
+                                        <a href="#">{{ listing.title }}</a>
+                                    </h3>
+                                    <p class="description">{{ listing.description|truncatechars:140 }}</p>
+                                    <div class="trainer d-flex justify-content-between align-items-center">
+                                        <div class="trainer-profile d-flex align-items-center">
+                                            <img src="{{ listing.user.avatar_url }}"
+                                                 class="img-fluid rounded-circle me-2"
+                                                 alt="Avatar for {{ listing.user.display_name }}">
+                                            <div>
+                                                <span class="trainer-link d-block">{{ listing.user.display_name }}</span>
+                                                <small class="text-muted">{{ listing.user.role }}</small>
+                                            </div>
+                                        </div>
+                                        <div class="trainer-rank text-end">
+                                            <small class="text-muted">Posted {{ listing.created_at|date:"M j, Y" }}</small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
